@@ -41,6 +41,7 @@
       "wezterm"
       "claude-code"
       "visual-studio-code"
+      "docker-desktop"
     ];
   };
 }

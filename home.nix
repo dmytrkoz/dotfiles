@@ -15,12 +15,27 @@ in
     fzf       # fuzzy finder
     jq        # json on the command line
     lazygit
+    nodejs    # runtime for npm-installed agent tools
     neovim
     # the font everything renders in
     nerd-fonts.hack
   ];
   fonts.fontconfig.enable = true;
   home.sessionVariables.EDITOR = "nvim";
+  # The nix store is read-only, so `npm install -g` goes to a user-owned prefix instead.
+  home.sessionVariables.NPM_CONFIG_PREFIX = "$HOME/.npm-global";
+  # Self-updating CLIs (installed outside nix) land in these.
+  home.sessionPath = [
+    "$HOME/.local/bin"
+    "$HOME/.npm-global/bin"
+  ];
+
+  # gh, plus its git credential helper so https pushes use the gh login.
+  programs.gh.enable = true;
+
+  # Enabled so home-manager can write gh's credential helper into ~/.config/git/config.
+  # Identity deliberately stays out of this repo (see README "Make it yours").
+  programs.git.enable = true;
 
   programs.zsh = {
     enable = true;

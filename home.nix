@@ -1,4 +1,4 @@
-{ config, pkgs, user, ... }:
+{ config, lib, pkgs, user, ... }:
 
 let
   dotfiles = "${config.home.homeDirectory}/.dotfiles";
@@ -75,8 +75,29 @@ in
     config.lib.file.mkOutOfStoreSymlink "${dotfiles}/home/.config/nvim";
   home.file.".config/herdr".source =
     config.lib.file.mkOutOfStoreSymlink "${dotfiles}/home/.config/herdr";
-  home.file.".claude/settings.json".source =
-    config.lib.file.mkOutOfStoreSymlink "${dotfiles}/home/.claude/settings.json";
+  # Claude's settings.json must stay writable: tools such as herdr add their own hooks to it.
+  # Each switch merges the keys authored in this repo over the live file, so repo values win
+  # and anything a tool added is kept.
+  home.activation.claudeSettings = lib.hm.dag.entryAfter [ "linkGeneration" ] ''
+    settings="$HOME/.claude/settings.json"
+    run mkdir -p "$HOME/.claude"
+    if [ -L "$settings" ]; then
+      # A previous generation linked this file; keep its content but make it a real file.
+      run cp --remove-destination "$(readlink -f "$settings")" "$settings"
+    fi
+    if [ -e "$settings" ]; then
+      merged="$(${pkgs.jq}/bin/jq -s '.[0] * .[1]' "$settings" ${./home/.claude/settings.json})"
+      if [ -z "''${DRY_RUN:-}" ]; then
+        tmp="$(mktemp "$settings.XXXXXX")"
+        printf '%s\n' "$merged" > "$tmp"
+        mv "$tmp" "$settings"
+      else
+        echo "would merge ${./home/.claude/settings.json} into $settings"
+      fi
+    else
+      run install -m 644 ${./home/.claude/settings.json} "$settings"
+    fi
+  '';
 
   # Keep Pi's credential and runtime state local by linking only authored files and directories.
   home.file.".pi/agent/themes".source =

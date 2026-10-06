@@ -19,3 +19,4 @@ result-*
 .no-mistakes/
 home/.config/herdr/*.sock.*
 home/.config/herdr/session-snapshots/
+home/.config/herdr/.plugins.lock

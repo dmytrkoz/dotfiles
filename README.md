@@ -104,7 +104,6 @@ Read through `brews` and `casks` before you run `bootstrap.sh` or `rebuild.sh` f
 **About `herdr`:** it's in the `brews` list.
 It's a real public Homebrew formula (`brew info herdr` finds it in homebrew-core, no tap needed), so it will install fine.
 If you don't use it, just remove it from `brews` in your copy.
-`home/.claude/settings.json` carries Herdr's Claude agent-state hook; on a new machine run `herdr integration install claude` to install the script it calls, and remove the hook entry if you drop Herdr.
 
 **Heads-up:**
 
@@ -128,6 +127,10 @@ If you don't use it, just remove it from `brews` in your copy.
 The files under `home/` are the real files - editing them here is editing your live config, no rebuild needed to see the change in your editor.
 `home.nix` uses `mkOutOfStoreSymlink` to point paths like `~/.config/nvim` straight at `home/.config/nvim` in this repo, so the two never drift out of sync.
 You only run `./rebuild.sh` when you change something that isn't just a symlinked file, like a package list or a system default.
+
+`~/.claude/settings.json` is the one exception, because tools such as Herdr and the axi CLIs write their own hooks into it.
+It stays a normal writable file, and each `./rebuild.sh` merges `home/.claude/settings.json` over it: keys from this repo win, and anything a tool added is kept.
+So edit Claude settings in `home/.claude/settings.json` and rebuild; a change made only through Claude's `/config` lasts until the next rebuild if the repo sets that key.
 
 ## Optional Pi configuration
 

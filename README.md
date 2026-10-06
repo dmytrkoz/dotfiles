@@ -7,7 +7,7 @@ One repo, one command, and a fresh Mac ends up configured the same way every tim
 
 Running the switch builds:
 
-- System settings (dark mode, key repeat, dock, Finder, trackpad)
+- System settings (dark mode, key repeat, dock, Finder, trackpad, and no idle sleep while on the charger so long-running agents keep working)
 - Homebrew apps (casks and CLI tools)
 - Nix user packages (ripgrep, fd, fzf, jq, lazygit, Node.js, Neovim, Hack Nerd Font)
 - A user-owned npm global prefix (`~/.npm-global`) and `~/.local/bin` on PATH, for self-updating CLIs installed outside Nix

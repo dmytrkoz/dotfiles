@@ -25,6 +25,12 @@
     finder.CreateDesktop = false;          # clean desktop
     trackpad.Clicking = true;              # tap to click
   };
+  # Never idle-sleep while on the charger, so long-running agents keep working unattended.
+  # Battery keeps macOS's default sleep behaviour; nix-darwin's power.sleep.computer would apply to both.
+  system.activationScripts.postActivation.text = ''
+    /usr/bin/pmset -c sleep 0
+  '';
+
   nix-homebrew = {
     enable = true;
     inherit user;

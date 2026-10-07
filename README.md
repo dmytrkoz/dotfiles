@@ -9,6 +9,7 @@ Running the switch builds:
 
 - System settings (dark mode, key repeat, dock, Finder, trackpad, and no idle sleep while on the charger so long-running agents keep working)
 - Homebrew apps (casks and CLI tools)
+- Android tooling: SDK command-line tools and JDK 21, with `ANDROID_HOME` at `~/Library/Android/sdk`; install SDK packages with `sdkmanager --sdk_root="$ANDROID_HOME" ...`
 - Nix user packages (ripgrep, fd, fzf, jq, lazygit, Node.js, Neovim, Hack Nerd Font)
 - A user-owned npm global prefix (`~/.npm-global`) and `~/.local/bin` on PATH, for self-updating CLIs installed outside Nix
 - GitHub CLI, wired in as git's credential helper

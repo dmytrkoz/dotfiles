@@ -48,6 +48,8 @@
       "claude-code"
       "visual-studio-code"
       "docker-desktop"
+      "android-commandlinetools"  # sdkmanager/avdmanager; the SDK itself lives in ~/Library/Android/sdk
+      "zulu@21"                   # JDK 21 for Android/Capacitor Gradle builds
     ];
   };
 }

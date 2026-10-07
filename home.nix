@@ -24,10 +24,15 @@ in
   home.sessionVariables.EDITOR = "nvim";
   # The nix store is read-only, so `npm install -g` goes to a user-owned prefix instead.
   home.sessionVariables.NPM_CONFIG_PREFIX = "$HOME/.npm-global";
+  # Android SDK packages live in a user-owned root so cask upgrades never wipe them.
+  home.sessionVariables.ANDROID_HOME = "$HOME/Library/Android/sdk";
+  home.sessionVariables.JAVA_HOME = "/Library/Java/JavaVirtualMachines/zulu-21.jdk/Contents/Home";
   # Self-updating CLIs (installed outside nix) land in these.
   home.sessionPath = [
     "$HOME/.local/bin"
     "$HOME/.npm-global/bin"
+    "$HOME/Library/Android/sdk/platform-tools"
+    "$HOME/Library/Android/sdk/emulator"
   ];
 
   # gh, plus its git credential helper so https pushes use the gh login.

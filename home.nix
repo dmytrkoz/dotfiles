@@ -42,6 +42,19 @@ in
   # Identity deliberately stays out of this repo (see README "Make it yours").
   programs.git.enable = true;
 
+  # GitHub over SSH with the macOS system ssh: the key passphrase lives in the login Keychain.
+  # The private key itself is never part of this repo.
+  programs.ssh = {
+    enable = true;
+    enableDefaultConfig = false;
+    settings."github.com" = {
+      IdentityFile = "~/.ssh/id_ed25519";
+      IdentitiesOnly = "yes";
+      AddKeysToAgent = "yes";
+      UseKeychain = "yes";
+    };
+  };
+
   programs.zsh = {
     enable = true;
     autosuggestion.enable = true;      # ghost text from history
@@ -80,6 +93,8 @@ in
     config.lib.file.mkOutOfStoreSymlink "${dotfiles}/home/.config/nvim";
   home.file.".config/herdr".source =
     config.lib.file.mkOutOfStoreSymlink "${dotfiles}/home/.config/herdr";
+  home.file.".hammerspoon".source =
+    config.lib.file.mkOutOfStoreSymlink "${dotfiles}/home/.hammerspoon";
   # Claude's settings.json must stay writable: tools such as herdr add their own hooks to it.
   # Each switch merges the keys authored in this repo over the live file, so repo values win
   # and anything a tool added is kept.
